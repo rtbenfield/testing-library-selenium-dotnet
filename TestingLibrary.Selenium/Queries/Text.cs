@@ -7,7 +7,7 @@ using TestingLibrary.Selenium.Exceptions;
 
 namespace TestingLibrary.Selenium
 {
-  public static class QueryByTextExtensions
+  public static partial class Queries
   {
     public static Task<IEnumerable<IWebElement>> FindAllByTextAsync(this ISearchContext container, Matcher matcher, QueryOptions options = null)
     {
@@ -20,7 +20,7 @@ namespace TestingLibrary.Selenium
 
     public static IWebElement GetByText(this ISearchContext container, Matcher matcher, QueryOptions options = null)
     {
-      return container.QueryByText(matcher, options) ?? throw new ElementException($"Unable to find an element with the text: {matcher}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.", container as IWebElement); ;
+      return container.QueryByText(matcher, options) ?? throw new ElementException($"Unable to find an element with the text: {matcher}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.", container); ;
     }
 
     public static IEnumerable<IWebElement> GetAllByText(this ISearchContext container, Matcher matcher, QueryOptions options = null)
@@ -28,7 +28,7 @@ namespace TestingLibrary.Selenium
       IEnumerable<IWebElement> results = container.QueryAllByText(matcher, options);
       if (!results.Any())
       {
-        throw new ElementException($"Unable to find an element with the text: {matcher}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.", container as IWebElement);
+        throw new ElementException($"Unable to find an element with the text: {matcher}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.", container);
       }
       return results;
     }

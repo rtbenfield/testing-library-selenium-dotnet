@@ -7,7 +7,7 @@ using TestingLibrary.Selenium.Exceptions;
 
 namespace TestingLibrary.Selenium
 {
-  public static class QueryByTestIdExtensions
+  public static partial class Queries
   {
     public static Task<IEnumerable<IWebElement>> FindAllByTestIdAsync(this ISearchContext container, Matcher matcher, QueryByAttributeOptions options = null)
     {
@@ -43,7 +43,7 @@ namespace TestingLibrary.Selenium
       }
       catch (InvalidOperationException)
       {
-        throw new MultipleElementsFoundException($"Found multiple elements by: [data-testid=\"{matcher}\"]", container as IWebElement);
+        throw new MultipleElementsFoundException($"Found multiple elements by: [data-testid=\"{matcher}\"]", container);
       }
     }
 

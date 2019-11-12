@@ -32,13 +32,9 @@ namespace TestingLibrary.Selenium
         Trim = options.Trim,
       });
 
-      var eligible = container.FindElements(By.CssSelector($"[{attribute}]"))
-        .Select(x => x.GetProperty("outerHTML"))
-        .ToArray();
-
       return container.FindElements(By.CssSelector($"[{attribute}]"))
         .Where(x => x.Parent() != null)
-        .Where(node => matcherFunction(node.GetAttribute("data-testid"), node, matcher, matchNormalizer));
+        .Where(node => matcherFunction(node.GetAttribute(attribute), node, matcher, matchNormalizer));
     }
   }
 }
