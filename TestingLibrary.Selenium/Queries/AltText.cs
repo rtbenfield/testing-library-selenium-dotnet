@@ -64,8 +64,7 @@ namespace TestingLibrary.Selenium
 
       return container.FindElements(By.CssSelector("img,input,area"))
         .Where(x => x.Parent() != null)
-        .Where(node => matcherFunction(node.GetAttribute("title"), node, matcher, matchNormalizer)
-          || matcherFunction(node.GetAttribute("alt"), node, matcher, matchNormalizer));
+        .Where(node => matcherFunction(node.GetAttribute("alt"), node, matcher, matchNormalizer));
     }
   }
 }
