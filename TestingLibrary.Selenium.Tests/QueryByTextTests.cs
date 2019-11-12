@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
+using TestingLibrary.Selenium.Exceptions;
 
 namespace TestingLibrary.Selenium.Tests
 {
@@ -26,7 +27,7 @@ namespace TestingLibrary.Selenium.Tests
       {
         driver.RenderHtml(string.Empty);
         Stopwatch timer = Stopwatch.StartNew();
-        await Assert.ThrowsExceptionAsync<DomElementException>(() => driver.FindAllByTextAsync("FindAllByText_Fail_Missing"));
+        await Assert.ThrowsExceptionAsync<ElementException>(() => driver.FindAllByTextAsync("FindAllByText_Fail_Missing"));
         timer.Stop();
         Assert.IsTrue(timer.Elapsed >= TimeSpan.FromSeconds(5));
       }
@@ -53,7 +54,7 @@ namespace TestingLibrary.Selenium.Tests
       {
         driver.RenderHtml(string.Empty);
         Stopwatch timer = Stopwatch.StartNew();
-        await Assert.ThrowsExceptionAsync<DomElementException>(() => driver.FindByTextAsync("FindByText_Fail_Missing"));
+        await Assert.ThrowsExceptionAsync<ElementException>(() => driver.FindByTextAsync("FindByText_Fail_Missing"));
         timer.Stop();
         Assert.IsTrue(timer.Elapsed >= TimeSpan.FromSeconds(5));
       }
@@ -68,7 +69,7 @@ namespace TestingLibrary.Selenium.Tests
 <div>FindByText_Fail_Multiple</div>
 <div>FindByText_Fail_Multiple</div>
         ", TimeSpan.FromSeconds(1));
-        await Assert.ThrowsExceptionAsync<DomElementException>(() => driver.FindByTextAsync("FindByText_Fail_Multiple"));
+        await Assert.ThrowsExceptionAsync<MultipleElementsFoundException>(() => driver.FindByTextAsync("FindByText_Fail_Multiple"));
       }
     }
 
@@ -89,7 +90,7 @@ namespace TestingLibrary.Selenium.Tests
       using (IWebDriver driver = CreateWebDriver())
       {
         driver.RenderHtml(string.Empty);
-        Assert.ThrowsException<DomElementException>(() => driver.GetAllByText("GetAllByText_Fail_Missing"));
+        Assert.ThrowsException<ElementException>(() => driver.GetAllByText("GetAllByText_Fail_Missing"));
       }
     }
 
@@ -116,7 +117,7 @@ namespace TestingLibrary.Selenium.Tests
       using (IWebDriver driver = CreateWebDriver())
       {
         driver.RenderHtml(string.Empty);
-        Assert.ThrowsException<DomElementException>(() => driver.GetByText("GetByText_Fail_Missing"));
+        Assert.ThrowsException<ElementException>(() => driver.GetByText("GetByText_Fail_Missing"));
       }
     }
 
@@ -129,7 +130,7 @@ namespace TestingLibrary.Selenium.Tests
 <div>GetByText_Fail_Multiple</div>
 <div>GetByText_Fail_Multiple</div>
         ");
-        Assert.ThrowsException<DomElementException>(() => driver.GetByText("GetByText_Fail_Multiple"));
+        Assert.ThrowsException<MultipleElementsFoundException>(() => driver.GetByText("GetByText_Fail_Multiple"));
       }
     }
 

@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
+using TestingLibrary.Selenium.Exceptions;
 
 namespace TestingLibrary.Selenium.Tests
 {
@@ -54,7 +55,7 @@ namespace TestingLibrary.Selenium.Tests
       using (IWebDriver driver = CreateWebDriver())
       {
         driver.RenderHtml(string.Empty);
-        await Assert.ThrowsExceptionAsync<DomElementException>(async () =>
+        await Assert.ThrowsExceptionAsync<ElementException>(async () =>
         {
           await WaitForElement.WaitForElementAsync(() => driver.GetByText("Hello World"));
         });

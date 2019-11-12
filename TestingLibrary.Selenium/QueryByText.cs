@@ -3,25 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using TestingLibrary.Selenium.Exceptions;
 
 namespace TestingLibrary.Selenium
 {
-  public class QueryOptions
-  {
-    public bool? CollapseWhitespace { get; set; }
-
-    public bool Exact { get; set; } = true;
-
-    public string Ignore { get; set; } = "script, style";
-
-    public NormalizerFunction Normalizer { get; set; }
-
-    public string Selector { get; set; } = "*";
-
-    public bool? Trim { get; set; }
-  }
-
-  public static class WebDriverExtensions
+  public static class QueryByTextExtensions
   {
     public static Task<IEnumerable<IWebElement>> FindAllByTextAsync(this ISearchContext container, Matcher matcher, QueryOptions options = null)
     {
@@ -34,7 +20,7 @@ namespace TestingLibrary.Selenium
 
     public static IWebElement GetByText(this ISearchContext container, Matcher matcher, QueryOptions options = null)
     {
-      return container.QueryByText(matcher, options) ?? throw new DomElementException($"Unable to find an element with the text: {matcher}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.", container as IWebElement); ;
+      return container.QueryByText(matcher, options) ?? throw new ElementException($"Unable to find an element with the text: {matcher}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.", container as IWebElement); ;
     }
 
     public static IEnumerable<IWebElement> GetAllByText(this ISearchContext container, Matcher matcher, QueryOptions options = null)
@@ -42,7 +28,7 @@ namespace TestingLibrary.Selenium
       IEnumerable<IWebElement> results = container.QueryAllByText(matcher, options);
       if (!results.Any())
       {
-        throw new DomElementException($"Unable to find an element with the text: {matcher}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.", container as IWebElement);
+        throw new ElementException($"Unable to find an element with the text: {matcher}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.", container as IWebElement);
       }
       return results;
     }
@@ -57,7 +43,7 @@ namespace TestingLibrary.Selenium
       }
       catch (InvalidOperationException)
       {
-        throw new DomElementException($"Found multiple elements with the text: {matcher}", container as IWebElement);
+        throw new MultipleElementsFoundException(string.Empty, container);
       }
     }
 
@@ -81,11 +67,6 @@ namespace TestingLibrary.Selenium
       {
         baseArray = new IWebElement[] { containerElement };
       }
-
-      var possible = baseArray.Concat(container.FindElements(By.CssSelector(options.Selector)))
-        .Where(x => x.Parent() != null)
-        .Where(node => string.IsNullOrEmpty(options.Ignore) || !node.Matches(options.Ignore))
-        .ToArray();
 
       return baseArray.Concat(container.FindElements(By.CssSelector(options.Selector)))
         .Where(x => x.Parent() != null)
