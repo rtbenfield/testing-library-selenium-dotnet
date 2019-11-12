@@ -43,7 +43,7 @@ namespace TestingLibrary.Selenium
       }
       catch (InvalidOperationException)
       {
-        throw new MultipleElementsFoundException(string.Empty, container);
+        throw new MultipleElementsFoundException($"Found multiple elements with the text: {matcher}", container);
       }
     }
 
